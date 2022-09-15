@@ -1,4 +1,5 @@
 import datetime as dt
+from enum import unique
 import sqlalchemy as sql
 
 import database as database
@@ -12,3 +13,5 @@ class User(database.Base):
     email = sql.Column(sql.String, index=True, unique=True)
     phone_number = sql.Column(sql.String, index=True, unique=True)
     date_created = sql.Column(sql.DateTime, default=dt.datetime.utcnow)
+    username = sql.Column(sql.String, unique=True)
+    password = sql.Column(sql.String, unique=True)

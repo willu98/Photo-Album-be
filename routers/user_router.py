@@ -1,3 +1,4 @@
+from http.client import HTTPException
 from typing import List
 
 import fastapi as fastapi
@@ -5,15 +6,35 @@ import sqlalchemy.orm as orm
 
 import schemas as schemas
 import services as services
+import sys
+sys.path.append("..")
+from auth import AuthHandler
 
 user_router = fastapi.APIRouter()
+auth_handler = AuthHandler()
 
-@user_router.post("/add/", response_model=schemas.User)
+
+@user_router.post("/add/", response_model=schemas.User, status_code=201)
 async def create_user(
     user: schemas.User,
     db: orm.Session = fastapi.Depends(services.get_db),
 ):
+    user.password = auth_handler.get_hashed_password(user.password)
     return await services.create_user(user=user, db=db)
+
+
+@user_router.post("/login/")
+async def login_user(
+    user: schemas.UserAcc,
+    db: orm.Session = fastapi.Depends(services.get_db)
+):
+    user_db = await services.get_user_name(username=user.username, db=db)
+    print(user_db)
+    if not auth_handler.verify_password(password=user.password, hashed_pass=user_db.password):
+        raise fastapi.HTTPException(status_code=401, detail='Wrong password')
+    token = auth_handler.encode_token(user.username)
+    return { "token":token }
+
 
 
 @user_router.get("/get_users/", response_model=List[schemas.User])

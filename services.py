@@ -23,7 +23,6 @@ def get_db():
 async def create_user(
     user: schemas.User, db: "Session"
 ) -> schemas.User:
-    print(user.dict())
     user = models.User(**user.dict())
     db.add(user)
     db.commit()
@@ -36,11 +35,14 @@ async def get_all_users(db: "Session") -> List[schemas.User]:
     return list(map(schemas.User.from_orm, users))
 
 
-async def get_User(user_id: int, db: "Session"):
+async def get_user(user_id: int, db: "Session"):
     user = db.query(models.User).filter(models.User.id == user_id).first()
     return user
 
-
+async def get_user_name(username: str, db: "Session"):
+    user = db.query(models.User).filter(models.User.username == username)
+    return user
+    
 async def delete_user(user: models.User, db: "Session"):
     db.delete(user)
     db.commit()
