@@ -30,7 +30,7 @@ jobs:
           REPO: photo-app-be
         run: |
           touch .env
-          echo tes >> .env
+          echo DB_ADDR=${{DB_ADDR}} >> .env
 
           cat .env
           docker build -t $REPO .
