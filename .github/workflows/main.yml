@@ -42,12 +42,6 @@ jobs:
           docker build -t $REPO .
           docker tag $REPO:latest ${{ secrets.DOCKER_USERNAME }}/$REPO:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/$REPO
-      #- name: INSTALL SSH KEY
-       # uses: shimataro/ssh-key-action@v2
-        #with:
-         # key: $ {{ secrets.SSH_KEY }}
-          #name: id_rsa
-          #know_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Docker Pull and Run
         uses: appleboy/ssh-action@master
         with:
@@ -61,3 +55,4 @@ jobs:
             docker stop backend_server
             docker rm backend_server
             docker run -d --name backend_server -p 80:80 willu98/photo-app-be:latest
+            docker commit backend_server snapshot
