@@ -30,7 +30,7 @@ jobs:
           REPO: photo-app-be
         run: |
 
-          docker build -t $REPO
+          docker build -t $REPO .
           docker tag $REPO:latest ${{ secrets.DOCKER_USERNAME }}/$REPO:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/$REPO
       - name: Docker Pull and Run
