@@ -6,7 +6,7 @@ RUN python -m pip install --upgrade pip
 RUN pip install pipenv && pipenv install --dev --system --deploy
 
 WORKDIR /app
-RUN ls -al
 COPY . /app
+RUN ls -al
 
 CMD ["uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "80"]
