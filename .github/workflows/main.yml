@@ -46,6 +46,6 @@ jobs:
           username: ubuntu
           key: ${{ secrets.ACTION_PRIVATE_KEY }}
           envs: GITHUB_SHA
-        - name
-          run: |
+      - name:
+        run: |
           ls -l 
