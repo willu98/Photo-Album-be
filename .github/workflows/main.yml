@@ -19,17 +19,6 @@ jobs:
     steps:
       - name: check out repo
         uses: actions/checkout@v3
-        run: |
-          touch .env
-          echo 'DB_ADDR=${{DB_ADDR}}' >> .env
-          echo 'DB_PORT=${{DB_PORT}}' >> .env
-          echo 'DB_NAME=${{DB_NAME}}' >> .env
-          echo 'DB_USR_NAME=${{DB_USR_NAME}}' >> .env
-          echo 'DB_PSWD=${{DB_PSWD}}' >> .env
-          echo 'AWS_KEY_ID=${{AWS_KEY_ID}}' >> .env
-          echo 'AWS_KEY=${{AWS_KEY}}' >> .env
-          echo 'S3_BUCKET=${{S3_BUCKET}}' >> .env
-          cat .env
       -
         name: Login to Docker Hub
         uses: docker/login-action@v2
@@ -40,6 +29,16 @@ jobs:
         env:
           REPO: photo-app-be
         run: |
+          touch .env
+          echo 'DB_ADDR=${{secrets.DB_ADDR}}' >> .env
+          echo 'DB_PORT=${{secrets.DB_PORT}}' >> .env
+          echo 'DB_NAME=${{secrets.DB_NAME}}' >> .env
+          echo 'DB_USR_NAME=${{secrets.DB_USR_NAME}}' >> .env
+          echo 'DB_PSWD=${{secrets.DB_PSWD}}' >> .env
+          echo 'AWS_KEY_ID=${{secrets.AWS_KEY_ID}}' >> .env
+          echo 'AWS_KEY=${{secrets.AWS_KEY}}' >> .env
+          echo 'S3_BUCKET=${{secrets.S3_BUCKET}}' >> .env
+          cat .env
           docker build -t $REPO .
           docker tag $REPO:latest ${{ secrets.DOCKER_USERNAME }}/$REPO:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/$REPO
