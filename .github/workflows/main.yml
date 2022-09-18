@@ -48,7 +48,8 @@ jobs:
           envs: GITHUB_SHA
           script: |
             pwd
-            docker login
+            docker login -u ${{ secrets.DOCKER_USERNAME }}
+            echo ${{ secrets.DOCKER_PASSWORD }}            
             docker pull ${{ secrets.DOCKER_USER }}/$REPO
             docker stop backend_server
             docker rm backend_server
