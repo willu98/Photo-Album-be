@@ -30,8 +30,14 @@ jobs:
           REPO: photo-app-be
         run: |
           touch .env
-          echo DB_ADDR=${{DB_ADDR}} >> .env
-
+          echo 'DB_ADDR=${{DB_ADDR}}' >> .env
+          echo 'DB_PORT=${{DB_PORT}}' >> .env
+          echo 'DB_NAME=${{DB_NAME}}' >> .env
+          echo 'DB_USR_NAME=${{DB_USR_NAME}}' >> .env
+          echo 'DB_PSWD=${{DB_PSWD}}' >> .env
+          echo 'AWS_KEY_ID=${{AWS_KEY_ID}}' >> .env
+          echo 'AWS_KEY=${{AWS_KEY}}' >> .env
+          echo 'S3_BUCKET=${{S3_BUCKET}}' >> .env
           cat .env
           docker build -t $REPO .
           docker tag $REPO:latest ${{ secrets.DOCKER_USERNAME }}/$REPO:latest
