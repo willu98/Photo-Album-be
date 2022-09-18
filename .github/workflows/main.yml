@@ -60,4 +60,4 @@ jobs:
             docker pull ${{ secrets.DOCKER_USER }}/photo-app-be
             docker stop backend_server
             docker rm backend_server
-            docker run -d --name backend_server -p 80:80 willu98/photo-app-be
+            docker run -d --name backend_server -p 80:80 willu98/photo-app-be:latest
