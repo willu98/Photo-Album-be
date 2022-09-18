@@ -61,5 +61,5 @@ jobs:
             docker stop backend_server
             docker rm backend_server
             docker run -d --name backend_server -p 80:80 willu98/photo-app-be
-            docker exec -it backnd_server bash
+            docker exec -it backend_server bash
             ls -al
