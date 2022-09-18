@@ -33,3 +33,16 @@ jobs:
           docker build -t $REPO .
           docker tag $REPO:latest ${{ secrets.DOCKER_USERNAME }}/$REPO:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/$REPO
+      #- name: INSTALL SSH KEY
+       # uses: shimataro/ssh-key-action@v2
+        #with:
+         # key: $ {{ secrets.SSH_KEY }}
+          #name: id_rsa
+          #know_hosts: ${{ secrets.KNOWN_HOSTS }}
+      #- name: Docker Pull and Run
+       # uses: appleboy/ssh-action@master
+        #with:
+         # host: ec2-18-188-245-18.us-east-2.compute.amazonaws.com
+          #username: ubuntu
+          #key: ${{ secrets.ACTION_PRIVATE_KEY }}
+          #envs: GITHUB_SHA
