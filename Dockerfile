@@ -7,6 +7,6 @@ RUN pip install pipenv && pipenv install --dev --system --deploy
 
 WORKDIR /app
 COPY . /app
-RUN ls -al
+RUN cat .env
 
 CMD ["uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "80"]

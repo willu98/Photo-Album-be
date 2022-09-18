@@ -39,6 +39,7 @@ jobs:
           echo 'AWS_KEY=${{secrets.AWS_KEY}}' >> .env
           echo 'S3_BUCKET=${{secrets.S3_BUCKET}}' >> .env
           ls -al
+          cat .env
           docker build -t $REPO .
           docker tag $REPO:latest ${{ secrets.DOCKER_USERNAME }}/$REPO:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/$REPO
