@@ -18,6 +18,7 @@ async def create_user(
     user: schemas.User,
     db: orm.Session = fastapi.Depends(services.get_db),
 ):
+    
     user.password = auth_handler.get_hashed_password(user.password)
     return await services.create_user(user=user, db=db)
 
