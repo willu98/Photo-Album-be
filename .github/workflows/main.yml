@@ -30,7 +30,15 @@ jobs:
           REPO: photo-app-be
         run: |
           touch .env
-          ls -al
+          echo DB_ADDR=${{DB_ADDR}} >> .env
+          echo DB_PORT=${{DB_PORT}} >> .env
+          echo DB_NAME=${{DB_NAME}} >> .env
+          echo DB_USR_NAME=${{DB_USR_NAME}} >> .env
+          echo DB_PSWD=${{DB_PSWD}} >> .env
+          echo AWS_KEY_ID=${{AWS_KEY_ID}} >> .env
+          echo AWS_KEY=${{AWS_KEY}} >> .env
+          echo S3_BUCKET=${{S3_BUCKET}} >> .env
+          cat .env
           docker build -t $REPO .
           docker tag $REPO:latest ${{ secrets.DOCKER_USERNAME }}/$REPO:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/$REPO
@@ -50,5 +58,5 @@ jobs:
           script: |
             echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
             docker pull ${{ secrets.DOCKER_USER }}/photo-app-be
-            docker stop backend_server
-            docker rm backend_server          
+            docker kill $(docker ps -q)
+            docker run -d --name backend_server -p 80:80 willu98/photo-app-be
