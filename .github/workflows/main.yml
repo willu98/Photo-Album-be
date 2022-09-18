@@ -47,4 +47,9 @@ jobs:
           key: ${{ secrets.ACTION_PRIVATE_KEY }}
           envs: GITHUB_SHA
           script: |
-            ls -l
+            pwd
+            docker login
+            docker pull ${{ secrets.DOCKER_USER }}/$REPO
+            docker stop backend_server
+            docker rm backend_server
+            
