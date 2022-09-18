@@ -19,8 +19,6 @@ jobs:
     steps:
       - name: check out repo
         uses: actions/checkout@v3
-      - run: docker build -t test_img .
-      - run: docker run -d --name test -p 80:80 test_img
       -
         name: Login to Docker Hub
         uses: docker/login-action@v2
@@ -31,6 +29,8 @@ jobs:
         env:
           REPO: photo-app-be
         run: |
+          touch .env
+          ls -l
           docker build -t $REPO .
           docker tag $REPO:latest ${{ secrets.DOCKER_USERNAME }}/$REPO:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/$REPO
