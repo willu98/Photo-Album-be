@@ -13,12 +13,13 @@ user_router = fastapi.APIRouter()
 auth_handler = AuthHandler()
 
 
-@user_router.post("/register/", response_model=schemas.User, status_code=201)
+@user_router.post("/register/", status_code=201)
 async def create_user(
     user: schemas.User,
     db: orm.Session = fastapi.Depends(services.get_db)
 ):
-    if await services.get_user_byName(username=user.username,  db=db) is not None:
+    print(user)
+    if await services.get_user_byName(username=user.username, db=db) is not None:
         return {"Error":"Username already exists"}
     user.password = auth_handler.get_hashed_password(user.password)
     await services.create_user(user=user, db=db)

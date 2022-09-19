@@ -1,6 +1,11 @@
 import pydantic as pydantic
 
-#CHANGE LATER!
+class User_Photos(pydantic.BaseModel):
+    username:str
+    file_url:str
+    class Config:
+        orm_mode = True
+            
 class UserAcc(pydantic.BaseModel):
     username:str
     password:str

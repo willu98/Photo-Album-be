@@ -1,5 +1,4 @@
 from typing import TYPE_CHECKING, List
-from xmlrpc.client import Boolean
 
 import database as db_
 import db_models as models
@@ -22,7 +21,8 @@ def get_db():
 
 
 async def create_user(
-    user: schemas.User, db: "Session"
+    user: schemas.User, 
+    db: "Session"
 ) -> schemas.User:
     user = models.User(**user.dict())
     db.add(user)
@@ -50,7 +50,9 @@ async def delete_user(user: models.User, db: "Session"):
 
 
 async def update_user(
-    user_data: schemas.User, user: models.User, db: "Session"
+    user_data: schemas.User, 
+    user: models.User, 
+    db: "Session"
 ) -> schemas.User:
     user.first_name = user_data.first_name
     user.last_name = user_data.last_name
@@ -61,3 +63,15 @@ async def update_user(
     db.refresh(user)
 
     return schemas.User.from_orm(user)
+
+async def add_photo(
+    _photo: schemas.User_Photos,
+    db: "Session"
+): 
+    photo=models.User_Photos(**_photo.dict())
+    db.add(photo)
+    db.commit()
+    db.refresh(photo)
+    return schemas.User_Photos.from_orm(photo)
+
+    
