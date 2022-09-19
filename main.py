@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from routers import user_router, pictures_router
 app = fastapi.FastAPI()
 
-origins = ["http://localhost:3000/"]
+origins = ["http://localhost:3000"]
 
 app.add_middleware(
     CORSMiddleware,
