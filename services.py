@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING, List
+from xmlrpc.client import Boolean
 
 import database as db_
 import db_models as models
@@ -11,7 +12,7 @@ if TYPE_CHECKING:
 def _add_tables():
     return db_.Base.metadata.create_all(bind=db_.engine)
 
-
+    
 def get_db():
     db = db_.SessionLocal()
     try:
@@ -35,12 +36,12 @@ async def get_all_users(db: "Session") -> List[schemas.User]:
     return list(map(schemas.User.from_orm, users))
 
 
-async def get_user(user_id: int, db: "Session"):
+async def get_user_byID(user_id: int, db: "Session"):
     user = db.query(models.User).filter(models.User.id == user_id).first()
     return user
 
-async def get_user_name(username: str, db: "Session"):
-    user = db.query(models.User).filter(models.User.username == username)
+async def get_user_byName(username: str, db: "Session") -> schemas.User:
+    user = db.query(models.User).filter(models.User.username == username).first()
     return user
     
 async def delete_user(user: models.User, db: "Session"):
