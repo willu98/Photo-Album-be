@@ -41,8 +41,9 @@ jobs:
           key: ${{ secrets.ACTION_PRIVATE_KEY }}
           envs: GITHUB_SHA
           script: |
+            docker rmi $(docker images -a -q)
             echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-            docker pull ${{ secrets.DOCKER_USER }}/photo-app-be
+            docker pull ${{ secrets.DOCKER_USER }}/photo-app-be:latest
             docker stop backend_server
             docker rm backend_server
             docker run -d --name backend_server --env-file ./.env -p 80:80 willu98/photo-app-be:latest

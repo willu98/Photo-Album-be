@@ -21,7 +21,8 @@ async def create_user(
     if await services.get_user_byName(username=user.username,  db=db) is not None:
         return {"Error":"Username already exists"}
     user.password = auth_handler.get_hashed_password(user.password)
-    return await services.create_user(user=user, db=db)
+    await services.create_user(user=user, db=db)
+    return {"Success":"Account created"}
 
 
 @user_router.post("/login/")
