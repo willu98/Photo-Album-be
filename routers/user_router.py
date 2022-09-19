@@ -16,7 +16,7 @@ auth_handler = AuthHandler()
 @user_router.post("/register/", response_model=schemas.User, status_code=201)
 async def create_user(
     user: schemas.User,
-    db: orm.Session = fastapi.Depends(services.get_db),
+    db: orm.Session = fastapi.Depends(services.get_db)
 ):
     if await services.get_user_byName(username=user.username,  db=db) is not None:
         return {"Error":"Username already exists"}
@@ -42,13 +42,16 @@ async def login_user(
 
 
 @user_router.get("/get_users/", response_model=List[schemas.User])
-async def get_users(db: orm.Session = fastapi.Depends(services.get_db)):
+async def get_users(
+    db: orm.Session = fastapi.Depends(services.get_db)
+):
     return await services.get_all_users(db=db)
 
 
 @user_router.get("/get_users/{user_id}/", response_model=schemas.User)
 async def get_user(
-    user_id: int, db: orm.Session = fastapi.Depends(services.get_db)
+    user_id: int, 
+    db: orm.Session = fastapi.Depends(services.get_db)
 ):
     user = await services.get_user_byID(db=db, user_id=user_id)
     if user is None:
