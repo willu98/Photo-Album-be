@@ -47,9 +47,13 @@ jobs:
           script: |
             echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
             
-            docker rm backend_server_1
-            docker rm backend_server2
-            docker rm nginx_server
+            ids=$(docker ps -a -q)
+            for id in $ids
+            do
+              echo "$id"
+              docker stop $id && docker rm $id
+            done
+
             docker rmi ${{ secrets.DOCKER_USER }}/photo-app-be:latest
             docker rmi ${{ secrets.DOCKER_USER }}/nginx_server:latest
             
