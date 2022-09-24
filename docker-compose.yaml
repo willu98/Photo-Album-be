@@ -21,5 +21,7 @@ services:
     image: willu98/nginx_server:latest
     ports:
       - "80:80"
+    depends_on:
+      - backend_server_1
   
 
