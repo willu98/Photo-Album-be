@@ -51,4 +51,4 @@ jobs:
             docker rmi $(docker images -a -q)
             docker pull ${{ secrets.DOCKER_USER }}/photo-app-be:latest
             docker pull ${{ secrets.DOCKER_USER }}/nginx_server:latest
-            docker compose up -d
+            docker-compose up
