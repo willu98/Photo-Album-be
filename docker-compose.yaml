@@ -17,7 +17,7 @@ services:
       - "82:80"
 
   nginx_server:
-    container_name: nginx_server
+    container_name: nginx_server_prod
     image: willu98/nginx_server:latest
     ports:
       - "80:80"
