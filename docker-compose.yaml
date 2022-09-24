@@ -1,0 +1,25 @@
+version: "3"
+services:
+  backend_server_1:
+    container_name: backend_server_1
+    image: willu98/photo-app-be:latest
+    env_file:
+      - ./.env
+    ports:
+      - "81:80"
+
+  backend_server_2:
+    container_name: backend_server_2
+    image: willu98/photo-app-be:latest
+    env_file:
+      - ./.env
+    ports:
+      - "82:80"
+
+  nginx_server:
+    container_name: nginx_server
+    image: nginx_server_img
+    ports:
+      - "80:80"
+  
+
