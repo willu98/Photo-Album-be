@@ -34,7 +34,7 @@ jobs:
           docker tag $REPO:latest ${{ secrets.DOCKER_USERNAME }}/$REPO:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/$REPO
 
-          docker build -t $REPO2 .
+          docker build -t $REPO2 ./nginx/conf.d/
           docker tag $REPO2:latest ${{ secrets.DOCKER_USERNAME }}/$REPO2:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/$REPO2
       - name: Docker Pull and Run
