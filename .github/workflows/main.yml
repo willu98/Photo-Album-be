@@ -28,19 +28,15 @@ jobs:
       - name: Build and push to Docker Push
         env:
           REPO: photo-app-be
+          REPO2: nginx_server
         run: |
-
           docker build -t $REPO .
           docker tag $REPO:latest ${{ secrets.DOCKER_USERNAME }}/$REPO:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/$REPO
-      - name: Docker  build and push nginx server img
-        - env:
-          REPO: nginx_server
-        run: |
-          docker build -t $REPO ./nginx/conf.d/
-          docker tag $REPO:latest ${{ secrets.DOCKER_USERNAME }}/$REPO:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/$REPO
 
+          docker build -t $REPO2 .
+          docker tag $REPO2:latest ${{ secrets.DOCKER_USERNAME }}/$REPO2:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/$REPO2
       - name: Docker Pull and Run
         uses: appleboy/ssh-action@master
         with:
