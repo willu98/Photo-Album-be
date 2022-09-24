@@ -54,13 +54,9 @@ jobs:
               docker stop $id && docker rm $id
             done
 
-            ids=$(docker images ps -a -q)
-            for id in $ids
-            do
-              echo "$id"
-              docker rmi $id
-            done
-
+            docker rmi ${{ secrets.DOCKER_USER }}/photo-app-be:latest
+            docker rmi ${{ secrets.DOCKER_USER }}/nginx_server:latest
+            
             docker pull ${{ secrets.DOCKER_USER }}/photo-app-be:latest
             docker pull ${{ secrets.DOCKER_USER }}/nginx_server:latest
             docker-compose up -d
