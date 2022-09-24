@@ -15,7 +15,23 @@ load_dotenv()
 pictures_router = fastapi.APIRouter()
 auth_handler = AuthHandler()
 
+@pictures_router.get("/photos/{username}")
+async def get_photos(
+    username:str,
+    db: orm.Session = fastapi.Depends(services.get_db)
+):
+    photos = await services.get_photos_byUser(username=username,db=db)
+    return photos
 
+@pictures_router.get("/photos/{photo_id}")
+async def get_photo(
+    photo_id: int,
+    db: orm.Session = fastapi.Depends(services.get_db)
+):
+    photo = await services.get_photo_byID(db=db, photo_id=photo_id)
+    if photo is None:
+        raise fastapi.HTTPException(status_code=404, detail="Photo does not exist")
+    return photo
 
 @pictures_router.post("/photos/")
 async def upload_photo(
