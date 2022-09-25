@@ -55,9 +55,9 @@ jobs:
             docker rm nginx_server_prod
 
             echo ${{ secrets.DOCKER_USER }}
-            docker rmi ${{ secrets.DOCKER_USER }}/photo-app-be:latest
-            docker rmi ${{ secrets.DOCKER_USER }}/nginx_server:latest
+            docker rmi ${{ secrets.DOCKER_USERNAME }}/photo-app-be:latest
+            docker rmi ${{ secrets.DOCKER_USERNAME }}/nginx_server:latest
             
-            docker pull ${{ secrets.DOCKER_USER }}/photo-app-be:latest
-            docker pull ${{ secrets.DOCKER_USER }}/nginx_server:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/photo-app-be:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/nginx_server:latest
             docker-compose up -d
