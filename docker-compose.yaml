@@ -17,9 +17,11 @@ services:
       - "82:80"
 
   nginx_server:
-    container_name: nginx_server
-    image: nginx_server_img
+    container_name: nginx_server_prod
+    image: willu98/nginx_server:latest
     ports:
       - "80:80"
+    depends_on:
+      - backend_server_1
   
 
