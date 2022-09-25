@@ -22,7 +22,7 @@ async def get_photos(
     db: orm.Session = fastapi.Depends(services.get_db)
 ):
     photos = await services.get_photos_byUser(username=username,db=db)
-    return photos
+    return {"response": photos}
 
 @pictures_router.get("/photos/{photo_id}")
 async def get_photo(
@@ -31,8 +31,8 @@ async def get_photo(
 ):
     photo = await services.get_photo_byID(db=db, photo_id=photo_id)
     if photo is None:
-        raise fastapi.HTTPException(status_code=404, detail="Photo does not exist")
-    return photo
+        return {"message": "Photo does not exist"}
+    return {"response": photo}
 
 @pictures_router.post("/photos/")
 async def upload_photo(
@@ -46,4 +46,4 @@ async def upload_photo(
     print(file_url)
     photo=schemas.User_Photos(username="TEST_USER", file_url=file_url)
     await services.add_photo(_photo=photo, db=db)
-    return {"Success":"Picture uploaded"}
+    return {"response": "Success"}
