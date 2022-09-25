@@ -54,6 +54,7 @@ jobs:
             docker stop nginx_server_prod
             docker rm nginx_server_prod
 
+            echo ${{ secrets.DOCKER_USER }}
             docker rmi ${{ secrets.DOCKER_USER }}/photo-app-be:latest
             docker rmi ${{ secrets.DOCKER_USER }}/nginx_server:latest
             
