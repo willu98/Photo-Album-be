@@ -15,6 +15,7 @@ load_dotenv()
 pictures_router = fastapi.APIRouter()
 auth_handler = AuthHandler()
 
+#name=fastapi.Depends(auth_handler.auth_wrapper)
 @pictures_router.get("/photos/{username}")
 async def get_photos(
     username:str,

@@ -47,7 +47,12 @@ jobs:
           script: |
             echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
             
-            docker-compose down
+            docker stop backend_server_1
+            docker stop backend_server_2
+            docker rm backend_server_1
+            docker rm backend_server_2
+            docker stop nginx_server_prod
+            docker rm nginx_server_prod
 
             echo ${{ secrets.DOCKER_USER }}
             docker rmi ${{ secrets.DOCKER_USERNAME }}/photo-app-be:latest
