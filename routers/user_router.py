@@ -18,12 +18,14 @@ async def create_user(
     user: schemas.User,
     db: orm.Session = fastapi.Depends(services.get_db)
 ):
-    print(user)
     if await services.get_user_byName(username=user.username, db=db) is not None:
-        return {"Error":"Username already exists"}
+        return {"message": "User already exists"}
     user.password = auth_handler.get_hashed_password(user.password)
     await services.create_user(user=user, db=db)
-    return {"Success":"Account created"}
+    return {"response": {
+        "username": user.username,
+        "name": user.name,
+    }}
 
 
 @user_router.post("/login/")
@@ -33,12 +35,14 @@ async def login_user(
 ):
     user_db = await services.get_user_byName(username=user.username, db=db)
     if user_db is None:
-        return {"Error":"Username not found"}
+        return {"message": "User does not exist"}
         
     if not auth_handler.verify_password(password=user.password, hashed_pass=user_db.password):
-        raise fastapi.HTTPException(status_code=401, detail='Wrong password')
+        return {"message": "Password is incorrect"}
     token = auth_handler.encode_token(user.username)
-    return { "token":token }
+    return {"response": {
+        "token": token
+    }}
 
 
 
@@ -46,7 +50,8 @@ async def login_user(
 async def get_users(
     db: orm.Session = fastapi.Depends(services.get_db)
 ):
-    return await services.get_all_users(db=db)
+    users = await services.get_all_users(db=db)
+    return {"response": users}
 
 
 @user_router.get("/get_users/{user_id}/", response_model=schemas.User)
@@ -56,9 +61,8 @@ async def get_user(
 ):
     user = await services.get_user_byID(db=db, user_id=user_id)
     if user is None:
-        raise fastapi.HTTPException(status_code=404, detail="User does not exist")
-
-    return user
+        return {"message": "User does not exist"}
+    return {"response": user}
 
 
 @user_router.delete("/delete/{user_id}/")
@@ -67,11 +71,10 @@ async def delete_contact(
 ):
     user = await services.get_user_byID(db=db, user_id=user_id)
     if user is None:
-        raise fastapi.HTTPException(status_code=404, detail="Contact does not exist")
+        return {"message": "User does not exist"}
 
     await services.delete_user(user, db=db)
-
-    return "successfully deleted the user"
+    return {"response": "Success"}
 
 
 @user_router.put("/{user_id}/", response_model=schemas.User)
