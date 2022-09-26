@@ -2,6 +2,7 @@ import pydantic as pydantic
 
 class User_Photos(pydantic.BaseModel):
     username:str
+    user_filename: str
     file_url:str
     class Config:
         orm_mode = True
