@@ -78,6 +78,13 @@ async def get_photos_byUser(
     photos = db.query(models.User_Photos).filter(models.User_Photos.username == username).all()
     return list(map(schemas.User_Photos.from_orm, photos))
 
+async def get_photo_by_filename(
+    filename: str,
+    db: "Session"
+):
+    return db.query(models.User_Photos).filter(models.User_Photos.user_filename == filename).first()
+    
+
 async def add_photo(
     _photo: schemas.User_Photos,
     db: "Session"
