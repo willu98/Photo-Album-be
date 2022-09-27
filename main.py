@@ -15,4 +15,4 @@ app.add_middleware(
 )
 
 
-app.include_router(main_router.main_router, prefix="/api")
+app.include_router(main_router.main_router, prefix="/")
