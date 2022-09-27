@@ -1,4 +1,9 @@
 import pydantic as pydantic
+import fastapi
+
+class Photo_Submission(pydantic.BaseModel):
+    user_filename: str
+    file: fastapi.UploadFile
 
 class User_Photos(pydantic.BaseModel):
     username:str

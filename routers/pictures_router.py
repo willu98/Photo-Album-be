@@ -34,16 +34,20 @@ async def get_photos(
 async def get_photo(
     photo_id: int,
     db: orm.Session = fastapi.Depends(services.get_db),
-    #username=fastapi.Depends(auth_handler.auth_wrapper)
+    username=fastapi.Depends(auth_handler.auth_wrapper)
 ):
     photo = await services.get_photo_byID(db=db, photo_id=photo_id)
     if photo is None:
         return {"message": "Photo does not exist"}
+    if photo.username != username:
+        return {"message": "You are not authorized to view this photo"}
     return {"response": photo}
 
 @pictures_router.post("/")
 async def upload_photo(
     file: fastapi.UploadFile,
+    user_filename: str,
+    username=fastapi.Depends(auth_handler.auth_wrapper),
     db: orm.Session = fastapi.Depends(services.get_db)
 ):
     fileExtension = re.search(".[0-9a-z]+$", file.filename, re.IGNORECASE)
@@ -61,7 +65,7 @@ async def upload_photo(
     bucket.upload_fileobj(file.file, filename, ExtraArgs={"ACL":"public-read"})
     
     file_url=f"https://{os.getenv('S3_BUCKET')}.s3.us-east-2.amazonaws.com/{filename}"
-    photo=schemas.User_Photos(username="TEST_USER", file_url=file_url, user_filename="TESTINGNAME")
+    photo=schemas.User_Photos(username=username, file_url=file_url, user_filename=user_filename)
     await services.add_photo(_photo=photo, db=db)
     return {"response": {
         "file_url": photo.file_url,
