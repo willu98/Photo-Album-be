@@ -9,4 +9,4 @@ WORKDIR /app
 COPY . /app
 RUN ls -al /app
 
-CMD ["uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "80", "--root-path", "/api"]
