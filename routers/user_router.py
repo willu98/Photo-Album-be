@@ -48,7 +48,7 @@ async def login_user(
 
 
 
-@user_router.get("/get_users/", response_model=List[schemas.User])
+@user_router.get("/get_users/")
 async def get_users(
     db: orm.Session = fastapi.Depends(services.get_db)
 ):
@@ -56,7 +56,7 @@ async def get_users(
     return {"response": users}
 
 
-@user_router.get("/get_users/{user_id}/", response_model=schemas.User)
+@user_router.get("/get_users/{user_id}/")
 async def get_user(
     user_id: int, 
     db: orm.Session = fastapi.Depends(services.get_db)
