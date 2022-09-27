@@ -68,7 +68,7 @@ async def get_photo_byID(
     photo_id:int,
     db: "Session"
 ):
-    photo = db.query(models.User_Photos).filter(models.User_Photos.id == photo_id).first()
+    photo = db.query(models.User_Photos).get(photo_id)
     return photo
 
 async def get_photos_byUser(
@@ -94,5 +94,3 @@ async def add_photo(
     db.commit()
     db.refresh(photo)
     return schemas.User_Photos.from_orm(photo)
-
-    
