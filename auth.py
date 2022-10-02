@@ -2,7 +2,7 @@ import jwt
 from  fastapi import HTTPException, Security
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from passlib.context import CryptContext
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 
 class AuthHandler():
     security = HTTPBearer()
@@ -16,10 +16,10 @@ class AuthHandler():
         return self.pswd_context.verify(password, hashed_pass)
 
     def encode_token(self,  user_id):
-        exp = datetime.utcnow(timezone.utc) + timedelta(days = 0, minutes=15)
+        exp = datetime.utcnow() + timedelta(days = 0, minutes=15)
         payload = {
             'exp': exp,
-            'iat': datetime.utcnow(timezone.utc),
+            'iat': datetime.utcnow(),
             'sub': user_id
         }
         return {
