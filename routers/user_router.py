@@ -41,9 +41,10 @@ async def login_user(
         return {"message": "Password is incorrect"}
     token = auth_handler.encode_token(user.username)
     return {"response": {
-        "token": token,
+        "token": token.token,
         "username": user.username,
-        "name": user_db.name
+        "name": user_db.name,
+        "expiry": token.exp
     }}
 
 

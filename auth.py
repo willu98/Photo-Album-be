@@ -16,16 +16,20 @@ class AuthHandler():
         return self.pswd_context.verify(password, hashed_pass)
 
     def encode_token(self,  user_id):
+        exp = datetime.utcnow() + timedelta(days = 0, minutes=15)
         payload = {
-            'exp': datetime.utcnow() + timedelta(days=0, minutes=15),
+            'exp': exp,
             'iat': datetime.utcnow(),
             'sub': user_id
         }
-        return jwt.encode(
-            payload,
-            self.secret,
-            algorithm='HS256'
-        )
+        return {
+            'token': jwt.encode(
+                payload,
+                self.secret,
+                algorithm='HS256'
+            ),
+            'exp': exp
+        }
 
     def decode_token(self, token):
         try:
