@@ -45,12 +45,11 @@ async def get_photo(
 
 @pictures_router.post("/")
 async def upload_photo(
-    photo: schemas.Photo_Submission,
+    file: fastapi.UploadFile,
+    user_filename: str,
     username=fastapi.Depends(auth_handler.auth_wrapper),
     db: orm.Session = fastapi.Depends(services.get_db)
 ):
-    file = photo.file
-    user_filename = photo.user_filename
     fileExtension = re.search(".[0-9a-z]+$", file.filename, re.IGNORECASE)
     print(fileExtension.group(0))
     if fileExtension is None:
