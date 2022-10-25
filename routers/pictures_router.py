@@ -1,18 +1,20 @@
-from typing import List
 import os
-import fastapi as fastapi
-import sqlalchemy.orm as orm
-import boto3 as b3
-from dotenv import load_dotenv
-
-import string
 import random
 import re
+import string
+import sys
+from typing import List
+
+import boto3 as b3
+import fastapi as fastapi
 import schemas as schemas
 import services as services
-import sys
+import sqlalchemy.orm as orm
+from dotenv import load_dotenv
+
 sys.path.append("..")
 from auth import AuthHandler
+
 load_dotenv()
 
 pictures_router = fastapi.APIRouter()
@@ -30,13 +32,13 @@ async def get_photos(
     photos = await services.get_photos_byUser(username=username,db=db)
     return {"response": photos}
 
-@pictures_router.get("/id/{photo_id}")
+@pictures_router.get("/id/{file_url}")
 async def get_photo(
-    photo_id: int,
+    file_url: string,
     db: orm.Session = fastapi.Depends(services.get_db),
     username=fastapi.Depends(auth_handler.auth_wrapper)
 ):
-    photo = await services.get_photo_byID(db=db, photo_id=photo_id)
+    photo = await services.get_photo_by_file_url(db=db, file_url=file_url)
     if photo is None:
         return {"message": "Photo does not exist"}
     if photo.username != username:
@@ -71,14 +73,14 @@ async def upload_photo(
         "file_url": photo.file_url,
     }}
 
-@pictures_router.delete("/delete/{photo_id}")
+@pictures_router.delete("/delete/{file_url}")
 async def delete_photo(
-    photo_id: int,
+    file_url: string,
     db: orm.Session = fastapi.Depends(services.get_db)
 ):
-    photo = await services.get_photo_byID(photo_id, db)
+    photo = await services.get_photo_byID(file_url, db)
     if photo is None:
-        return {"message": f"Failed to find photo with ID: {photo_id}"}
+        return {"message": f"Failed to find photo with ID: {file_url}"}
 
     await services.delete_photo(photo)
     return {"response": "Success"}

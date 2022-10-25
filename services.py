@@ -84,6 +84,11 @@ async def get_photo_by_filename(
 ):
     return db.query(models.User_Photos).filter(models.User_Photos.user_filename == filename).first()
     
+async def get_photo_by_file_url(
+    file_url: str,
+    db: "Session"
+):
+    return db.query(models.User_Photos).filter(models.User_Photos.file_url == file_url).first()
 
 async def add_photo(
     _photo: schemas.User_Photos,
