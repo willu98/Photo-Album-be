@@ -32,9 +32,9 @@ async def get_photos(
     photos = await services.get_photos_byUser(username=username,db=db)
     return {"response": photos}
 
-@pictures_router.get("/id/{file_url}")
+@pictures_router.get("/url/")
 async def get_photo(
-    file_url: string,
+    file_url: str,
     db: orm.Session = fastapi.Depends(services.get_db),
     username=fastapi.Depends(auth_handler.auth_wrapper)
 ):
@@ -73,9 +73,9 @@ async def upload_photo(
         "file_url": photo.file_url,
     }}
 
-@pictures_router.delete("/delete/{file_url}")
+@pictures_router.delete("/delete/")
 async def delete_photo(
-    file_url: string,
+    file_url: str,
     db: orm.Session = fastapi.Depends(services.get_db)
 ):
     photo = await services.get_photo_byID(file_url, db)
