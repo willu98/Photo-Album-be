@@ -75,6 +75,7 @@ async def upload_photo(
 @pictures_router.delete("/delete/")
 async def delete_photo(
     file_url: str,
+    username=fastapi.Depends(auth_handler.auth_wrapper),
     db: orm.Session = fastapi.Depends(services.get_db)
 ):
     print(file_url)
