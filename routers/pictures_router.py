@@ -53,7 +53,6 @@ async def upload_photo(
     db: orm.Session = fastapi.Depends(services.get_db)
 ):
     fileExtension = re.search(".[0-9a-z]+$", file.filename, re.IGNORECASE)
-    print(fileExtension.group(0))
     if fileExtension is None:
         return {"message": f"Failed to parse extension for file: {file.filename}"}
 
@@ -78,9 +77,12 @@ async def delete_photo(
     file_url: str,
     db: orm.Session = fastapi.Depends(services.get_db)
 ):
-    photo = await services.get_photo_byID(file_url, db)
-    if photo is None:
-        return {"message": f"Failed to find photo with ID: {file_url}"}
-
-    await services.delete_photo(photo)
+    print(file_url)
+    filename = file_url[len('https://fastapi-photo-bucket.s3.us-east-2.amazonaws.com/'):]
+    print(filename)
+    s3 = b3.client('s3', aws_access_key_id=os.getenv('AWS_KEY_ID'), aws_secret_access_key=os.getenv('AWS_KEY'))
+    s3.delete_object(Bucket = os.getenv('S3_BUCKET'), Key=filename)
+    
+    photo = await services.get_photo_by_file_url(file_url, db)
+    await services.delete_photo(photo, db)
     return {"response": "Success"}

@@ -99,3 +99,7 @@ async def add_photo(
     db.commit()
     db.refresh(photo)
     return schemas.User_Photos.from_orm(photo)
+
+async def delete_photo(photo:schemas.User_Photos,db:"Session"):
+    db.delete(photo)
+    db.commit()
