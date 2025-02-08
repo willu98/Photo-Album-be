@@ -2,7 +2,7 @@ import datetime as dt
 from enum import unique
 import sqlalchemy as sql
 
-import database as database
+import database.database as database
 
 class User_Photos(database.Base):
     __tablename__ = "user_photos"

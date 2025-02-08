@@ -1,27 +1,66 @@
 version: "3"
 services:
+  postgres_db:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mynetwork
+
   backend_server_1:
     container_name: backend_server_1
-    image: willu98/photo-app-be:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     env_file:
       - ./.env
     ports:
       - "81:80"
+    depends_on:
+      - postgres_db
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    networks:
+      - mynetwork
 
   backend_server_2:
     container_name: backend_server_2
-    image: willu98/photo-app-be:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     env_file:
       - ./.env
     ports:
       - "82:80"
+    depends_on:
+      - postgres_db
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    networks:
+      - mynetwork
 
   nginx_server:
     container_name: nginx_server_prod
-    image: willu98/nginx_server:latest
+    build:
+      context: ./nginx/conf.d
+      dockerfile: Dockerfile
     ports:
       - "80:80"
     depends_on:
       - backend_server_1
-  
+      - backend_server_2
+    networks:
+      - mynetwork
 
+volumes:
+  postgres_data:
+
+networks:
+  mynetwork:
+    driver: bridge

@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING, List
 
-import database as db_
-import db_models as models
+import database.database as db_
+import database.db_models as models
 import schemas as schemas
 
 if TYPE_CHECKING:
